@@ -1,20 +1,18 @@
  {
      "core":
-     [{  
+     {  
          "unikraft"         : "d8ada116" 
-     }], 
- 
+     }, 
      "libs":
-     [{  
+     {  
          "pthread-embedded" : "b50dedc",
          "lwip"             : "06bd023",
          "zlib"             : "ddcf43f",
          "libuuid"          : "51dd7bf",
          "python3"          : "f8f3705",
          "newlib"           : "78469b5"
-     }], 
- 
+     }, 
      "plats":
-     [{ }]
+     { }
  }
 
