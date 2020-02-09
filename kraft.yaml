@@ -1,0 +1,42 @@
+specification: '0.4'
+
+unikraft:
+  version: '0.4'
+  kconfig:
+    # Enable 9pfs filesystem support
+    - CONFIG_LIBUK9P=y
+    - CONFIG_LIB9PFS=y
+    - CONFIG_LIBDEVFS=y
+    - CONFIG_LIBDEVFS_AUTOMOUNT=y
+    - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+    - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
+    - CONFIG_LIBUKLIBPARAM=y
+
+architectures:
+  x86_64:
+    kconfig:
+      - CONFIG_ARCH_X86_64=y
+
+platforms:
+  linuxu:
+    kconfig:
+      - CONFIG_PLAT_LINUXU=y
+      - CONFIG_LINUXU_DEFAULT_HEAPMB=4
+
+libraries:
+  pthread-embedded: '0.4'
+  lwip: '0.4'
+  zlib: '0.4'
+  libuuid: '0.4'
+  newlib: '0.4'
+  python3:
+    version: '0.4'
+    kconfig:
+      # Enable python3 and its dependencies
+      - CONFIG_LIBPYTHON3=y
+      - CONFIG_LIBPYTHON3_EXTENSIONS=y
+      - CONFIG_LIBPYTHON3_EXTENSION_EXPAT=y
+      - CONFIG_LIBPYTHON3_EXTENSION_LIBMPDEC=y
+      - CONFIG_LIBPYTHON3_EXTENSION_UUID=y
+      - CONFIG_LIBPYTHON3_EXTENSION_ZLIB=y
+      - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
