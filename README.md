@@ -3,8 +3,8 @@
 To build and run this application please use the `kraft` script:
 
     pip3 install git+https://github.com/unikraft/kraft.git
-    mkdir my-python3 && cd my-python3
-    kraft up -p PLATFORM -m ARCHITECTURE -a python3 my-python3
+    mkdir my-first-unikernel && cd my-first-unikernel
+    kraft up -p PLATFORM -m ARCHITECTURE python3
 
 For more information about `kraft` type ```kraft -h``` or read the
 [documentation](http://docs.unikraft.org).
