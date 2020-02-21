@@ -16,9 +16,6 @@ architectures:
   x86_64: true
 
 platforms:
-  linuxu:
-    kconfig:
-      - CONFIG_LINUXU_DEFAULT_HEAPMB=1024
   kvm:
     run:
       arguments: vfs.rootdev=fs0 vfs.rootfs=9pfs -- "helloworld.py"
