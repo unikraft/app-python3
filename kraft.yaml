@@ -13,15 +13,15 @@ unikraft:
     - CONFIG_LIBUKLIBPARAM=y
 
 architectures:
-  x86_64:
-    kconfig:
-      - CONFIG_ARCH_X86_64=y
+  x86_64: true
 
 platforms:
   linuxu:
     kconfig:
-      - CONFIG_PLAT_LINUXU=y
-      - CONFIG_LINUXU_DEFAULT_HEAPMB=4
+      - CONFIG_LINUXU_DEFAULT_HEAPMB=1024
+  kvm:
+    run:
+      arguments: vfs.rootdev=fs0 vfs.rootfs=9pfs -- "helloworld.py"
 
 libraries:
   pthread-embedded: '0.4'
@@ -40,3 +40,15 @@ libraries:
       - CONFIG_LIBPYTHON3_EXTENSION_UUID=y
       - CONFIG_LIBPYTHON3_EXTENSION_ZLIB=y
       - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
+
+run:
+  volumes:
+    fs0:
+      driver: 9pfs
+      source: ./minrootfs.tgz
+
+  networks:
+    net0:
+      pre_up: kraft-net --with-dnsmasq up
+      post_down: kraft-net --with-dnsmasq down
+      

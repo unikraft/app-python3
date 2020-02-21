@@ -1,5 +1,0 @@
-config APPPYTHON3
-	bool
-	default y
-	select LIBPYTHON3
-	select LIBPYTHON3_MAIN_FUNCTION
