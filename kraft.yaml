@@ -1,7 +1,7 @@
 specification: '0.4'
 
 unikraft:
-  version: '0.4'
+  version: '0.5'
   kconfig:
     # Enable 9pfs filesystem support
     - CONFIG_LIBUK9P=y
@@ -21,13 +21,13 @@ platforms:
       arguments: vfs.rootdev=fs0 vfs.rootfs=9pfs -- "helloworld.py"
 
 libraries:
-  pthread-embedded: '0.4'
-  lwip: '0.4'
-  zlib: '0.4'
-  libuuid: '0.4'
-  newlib: '0.4'
+  pthread-embedded: '0.5'
+  lwip: '0.5'
+  zlib: '0.5'
+  libuuid: '0.5'
+  newlib: '0.5'
   python3:
-    version: '0.4'
+    version: '0.5'
     kconfig:
       # Enable python3 and its dependencies
       - CONFIG_LIBPYTHON3=y
