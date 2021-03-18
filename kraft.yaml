@@ -1,9 +1,8 @@
-specification: '0.4'
-
+specification: '0.5'
+name: python3
 unikraft:
   version: '0.4'
   kconfig:
-    # Enable 9pfs filesystem support
     - CONFIG_LIBUK9P=y
     - CONFIG_LIB9PFS=y
     - CONFIG_LIBDEVFS=y
@@ -11,15 +10,9 @@ unikraft:
     - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
     - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
     - CONFIG_LIBUKLIBPARAM=y
-
-architectures:
-  x86_64: true
-
-platforms:
-  kvm:
-    run:
-      arguments: vfs.rootdev=fs0 vfs.rootfs=9pfs -- "helloworld.py"
-
+targets:
+  - architecture: x86_64
+    platform: kvm
 libraries:
   pthread-embedded: '0.4'
   lwip: '0.4'
@@ -29,7 +22,6 @@ libraries:
   python3:
     version: '0.4'
     kconfig:
-      # Enable python3 and its dependencies
       - CONFIG_LIBPYTHON3=y
       - CONFIG_LIBPYTHON3_EXTENSIONS=y
       - CONFIG_LIBPYTHON3_EXTENSION_EXPAT=y
@@ -37,15 +29,7 @@ libraries:
       - CONFIG_LIBPYTHON3_EXTENSION_UUID=y
       - CONFIG_LIBPYTHON3_EXTENSION_ZLIB=y
       - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
-
-run:
-  volumes:
-    fs0:
-      driver: 9pfs
-      source: ./minrootfs.tgz
-
-  networks:
-    net0:
-      pre_up: kraft-net --with-dnsmasq up
-      post_down: kraft-net --with-dnsmasq down
-      
+volumes:
+  fs0:
+    driver: 9pfs
+    source: ./minrootfs.tgz
