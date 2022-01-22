@@ -32,7 +32,7 @@ make
 ```
 
 Run the application:
-- Create a sub-directory named fs0 in the application directory and extract the contents of minrootfs.tgz there.
+- Create a sub-directory named `fs0/` in the application directory and extract the contents of `minrootfs.tgz` there.
 - If you built the application for `kvm`:
 ```
 sudo qemu-system-x86_64 \
