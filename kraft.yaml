@@ -2,7 +2,7 @@
 specification: '0.5'
 name: python3
 unikraft:
-  version: 9bf6e63
+  version: stable
   kconfig:
     - CONFIG_LIBUK9P=y
     - CONFIG_LIB9PFS=y
@@ -15,16 +15,16 @@ unikraft:
 targets:
   - architecture: x86_64
     platform: kvm
+  - architecture: arm64
+    platform: kvm
 libraries:
-  pthread-embedded:
+  musl:
     version: stable
   lwip:
     version: stable
   zlib:
     version: stable
   libuuid:
-    version: stable
-  newlib:
     version: stable
   python3:
     version: stable
