@@ -22,10 +22,6 @@ libraries:
     version: stable
   lwip:
     version: stable
-  zlib:
-    version: stable
-  libuuid:
-    version: stable
   python3:
     version: stable
     kconfig:
@@ -36,6 +32,8 @@ libraries:
       - CONFIG_LIBPYTHON3_EXTENSION_UUID=y
       - CONFIG_LIBPYTHON3_EXTENSION_ZLIB=y
       - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
+  libuuid:
+    version: stable
 volumes:
   fs0:
     driver: 9pfs
