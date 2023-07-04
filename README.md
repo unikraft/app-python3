@@ -3,6 +3,49 @@
 This application starts a Python3 web application with Unikraft.
 Follow the instructions below to set up, configure, build and run Python3.
 
+### Quick Setup (aka TLDR)
+
+For a quick setup, run the commands below.
+Note that you still need to install the [requirements](#requirements).
+
+For building and running everything for `x86_64`, follow the steps below:
+
+```console
+git clone https://github.com/unikraft/app-python3 python3
+cd python3/
+mkdir fs0/
+tar -C fs0/ -xvf rootfs.tar.gz
+mkdir .unikraft
+git clone https://github.com/unikraft/unikraft .unikraft/unikraft
+git clone https://github.com/unikraft/lib-python3 .unikraft/libs/python3
+git clone https://github.com/unikraft/lib-musl .unikraft/libs/musl
+git clone https://github.com/unikraft/lib-lwip .unikraft/libs/lwip
+git clone https://github.com/unikraft/lib-libuuid .unikraft/libs/libuuid
+UK_DEFCONFIG=$(pwd)/.config.python3_qemu-x86_64 make defconfig
+make -j $(nproc)
+sudo /usr/bin/qemu-system-x86_64 \
+    -fsdev local,id=myid,path="$(pwd)/fs0",security_model=none \
+    -device virtio-9p-pci,fsdev=myid,mount_tag=fs0,disable-modern=on,disable-legacy=off \
+    -kernel build/python3_qemu-x86_64 -nographic
+```
+
+This will configure, build and run the `Python3` application, resulting in a Python3 console being started.
+
+The same can be done for `AArch64`, by running the commands below:
+
+```console
+make properclean
+UK_DEFCONFIG=$(pwd)/.config.python3_qemu-arm64 make defconfig
+make -j $(nproc)
+sudo /usr/bin/qemu-system-aarch64 \
+    -fsdev local,id=myid,path="$(pwd)/fs0",security_model=none \
+    -device virtio-9p-pci,fsdev=myid,mount_tag=fs0,disable-modern=on,disable-legacy=off \
+    -kernel build/python3_qemu-arm64 -nographic \
+    -machine virt -cpu cortex-a57
+```
+
+Information about every step is detailed below.
+
 ## Requirements
 
 In order to set up, configure, build and run Python3 on Unikraft, the following packages are required:
@@ -25,7 +68,7 @@ GCC >= 8 is required to build Python3 on Unikraft.
 On Ubuntu/Debian or other `apt`-based distributions, run the following command to install the requirements:
 
 ```console
-$ sudo apt install -y --no-install-recommends \
+sudo apt install -y --no-install-recommends \
   build-essential \
   sudo \
   gcc-aarch64-linux-gnu \
@@ -59,73 +102,83 @@ Follow the steps below for the setup:
   1. First clone the [`app-python3` repository](https://github.com/unikraft/app-python3) in the `python3/` directory:
 
      ```console
-     $ git clone https://github.com/unikraft/app-python3 python3
+     git clone https://github.com/unikraft/app-python3 python3
      ```
 
      Enter the `python3/` directory:
 
      ```console
-     $ cd python3/
+     cd python3/
 
-     $ ls -F
-     build  config-qemu-aarch64  config-qemu-x86_64  kraft.yaml  Makefile  Makefile.uk  rootfs.tar.gz  README.md  run-qemu-aarch64  run-qemu-x86_64
+     ls -F
+     ```
+
+     This will show you the contents of the repository:
+
+     ```text
+     build  .config.python3_qemu-arm64  .config.python3_qemu-x86_64  kraft.yaml  Makefile  Makefile.uk  rootfs.tar.gz  README.md
      ```
 
   1. While inside the `python3/` directory, create the `fs0/` directory and extract the contents of `rootfs.tar.gz`:
 
      ```console
-     $ rm -rf fs0/
-     $ mkdir fs0/
-     $ tar -C fs0/ -xvf rootfs.tar.gz
+     rm -rf fs0/
+     mkdir fs0/
+     tar -C fs0/ -xvf rootfs.tar.gz
      ```
 
   1. While inside the `python3/` directory, create the `.unikraft/` directory:
 
      ```console
-     $ mkdir .unikraft
+     mkdir .unikraft
      ```
 
      Enter the `.unikraft/` directory:
 
      ```console
-     $ cd .unikraft/
+     cd .unikraft/
      ```
 
   1. While inside the `.unikraft` directory, clone the [`unikraft` repository](https://github.com/unikraft/unikraft):
 
      ```console
-     $ git clone https://github.com/unikraft/unikraft unikraft
+     git clone https://github.com/unikraft/unikraft unikraft
      ```
 
   1. While inside the `.unikraft/` directory, create the `libs/` directory:
 
      ```console
-     $ mkdir libs
+     mkdir libs
      ```
 
   1. While inside the `.unikraft/` directory, clone the library repositories in the `libs/` directory:
 
      ```console
-     $ git clone https://github.com/unikraft/lib-python3 libs/python3
+     git clone https://github.com/unikraft/lib-python3 libs/python3
 
-     $ git clone https://github.com/unikraft/lib-musl libs/musl
+     git clone https://github.com/unikraft/lib-musl libs/musl
 
-     $ git clone https://github.com/unikraft/lib-lwip libs/lwip
+     git clone https://github.com/unikraft/lib-lwip libs/lwip
 
-     $ git clone https://github.com/unikraft/lib-libuuid libs/libuuid
+     git clone https://github.com/unikraft/lib-libuuid libs/libuuid
      ```
 
   1. Get back to the application directory:
 
      ```console
-     $ cd ../
+     cd ../
      ```
 
      Use the `tree` command to inspect the contents of the `.unikraft/` directory.
      It should print something like this:
 
      ```console
-     $ tree -F -L 2 .unikraft/
+     tree -F -L 2 .unikraft/
+     ```
+
+     The layout of the `.unikraft/` directory should look something like this:
+
+     ```text
      .unikraft/
      |-- libs/
      |   |-- lwip/
@@ -161,16 +214,16 @@ Use the corresponding the configuration files (`config-...`), according to your 
 
 ### QEMU x86_64
 
-Use the `config-qemu-x86_64` configuration file together with `make defconfig` to create the configuration file:
+Use the `.config.python3_qemu-x86_64` configuration file together with `make defconfig` to create the configuration file:
 
 ```console
-$ UK_DEFCONFIG=$(pwd)/config-qemu-x86_64 make defconfig
+UK_DEFCONFIG=$(pwd)/.config.python3_qemu-x86_64 make defconfig
 ```
 
 This results in the creation of the `.config` file:
 
 ```console
-$ ls .config
+ls .config
 .config
 ```
 
@@ -178,10 +231,10 @@ The `.config` file will be used in the build step.
 
 ### QEMU AArch64
 
-Use the `config-qemu-aarch64` configuration file together with `make defconfig` to create the configuration file:
+Use the `.config.python3_qemu-arm64` configuration file together with `make defconfig` to create the configuration file:
 
 ```console
-$ UK_DEFCONFIG=$(pwd)/config-qemu-aarch64 make defconfig
+UK_DEFCONFIG=$(pwd)/.config.python3_qemu-arm64 make defconfig
 ```
 
 Similar to the x86_64 configuration, this results in the creation of the `.config` file that will be used in the build step.
@@ -210,7 +263,12 @@ Building for QEMU x86_64 assumes you did the QEMU x86_64 configuration step abov
 Build the Unikraft Python3 image for QEMU AArch64 by using the command below:
 
 ```console
-$ make -j $(nproc)
+make -j $(nproc)
+```
+
+You can see a list of all the files processed by the build system:
+
+```text
 [...]
   LD      python3_qemu-x86_64.dbg
   UKBI    python3_qemu-x86_64.dbg.bootinfo
@@ -236,7 +294,12 @@ Building for QEMU AArch64 assumes you did the QEMU AArch64 configuration step ab
 Build the Unikraft Python3 image for QEMU AArch64 by using the same command as for x86_64:
 
 ```console
-$ make -j $(nproc)
+make -j $(nproc)
+```
+
+Same as when building for x86_64, you can see a list of all the files 
+
+```text
 [...]
   LD      python3_qemu-arm64.dbg
   UKBI    python3_qemu-arm64.dbg.bootinfo
@@ -250,14 +313,22 @@ This image is to be used in the run step.
 
 ## Run
 
-Run the resulting image with the `run-...` scripts.
+Run the resulting image using `qemu-system`.
 
 ### QEMU x86_64
 
-To run the QEMU x86_64 build, use `run-qemu-x86_64.sh`:
+To run the QEMU x86_64 build, use `qemu-system-x86_64`:
 
 ```console
-$ ./run-qemu-x86_64.sh
+sudo /usr/bin/qemu-system-x86_64 \
+    -fsdev local,id=myid,path="$(pwd)/fs0",security_model=none \
+    -device virtio-9p-pci,fsdev=myid,mount_tag=fs0,disable-modern=on,disable-legacy=off \
+    -kernel build/python3_qemu-x86_64 -nographic
+```
+
+This will open up a Python3 console:
+
+```text
 en1: Added
 en1: Interface is up
 Powered by
@@ -281,10 +352,19 @@ that is press the `Ctrl` and `a` keys at the same time and then, separately, pre
 
 ### QEMU AArch64
 
-To run the AArch64 build, use `run-qemu-aarch64.sh`:
+To run the AArch64 build, use `qemu-system-aarch64`:
 
 ```console
-$ ./run-qemu-aarch64.sh
+sudo /usr/bin/qemu-system-aarch64 \
+    -fsdev local,id=myid,path="$(pwd)/fs0",security_model=none \
+    -device virtio-9p-pci,fsdev=myid,mount_tag=fs0,disable-modern=on,disable-legacy=off \
+    -kernel build/python3_qemu-arm64 -nographic \
+    -machine virt -cpu cortex-a57
+```
+
+Just like when running for x86_64, this will run the Python3 application:
+
+```text
 en1: Added
 en1: Interface is up
 Powered by
