@@ -20,7 +20,7 @@ git clone https://github.com/unikraft/unikraft .unikraft/unikraft
 git clone https://github.com/unikraft/lib-python3 .unikraft/libs/python3
 git clone https://github.com/unikraft/lib-musl .unikraft/libs/musl
 git clone https://github.com/unikraft/lib-lwip .unikraft/libs/lwip
-git clone https://github.com/unikraft/lib-libuuid .unikraft/libs/libuuid
+git clone https://github.com/unikraft/lib-compiler-rt .unikraft/libs/compiler-rt
 UK_DEFCONFIG=$(pwd)/.config.python3_qemu-x86_64 make defconfig
 make -j $(nproc)
 sudo /usr/bin/qemu-system-x86_64 \
@@ -95,7 +95,7 @@ The following repositories are required for Python3:
   * The Python3 "library" repository: [`lib-python3`](https://github.com/unikraft/lib-python3)
   * The standard C library: [`lib-musl`](https://github.com/unikraft/lib-musl)
   * The networking stack library: [`lib-lwip`](https://github.com/unikraft/lib-lwip)
-  * The uuid library: [`lib-libuuid`](https://github.com/unikraft/lib-libuuid)
+  * The compiler runtime library: [`lib-compiler-rt`](https://github.com/unikraft/lib-compiler-rt)
 
 Follow the steps below for the setup:
 
@@ -160,7 +160,7 @@ Follow the steps below for the setup:
 
      git clone https://github.com/unikraft/lib-lwip libs/lwip
 
-     git clone https://github.com/unikraft/lib-libuuid libs/libuuid
+     git clone https://github.com/unikraft/lib-compiler-rt libs/compiler-rt
      ```
 
   1. Get back to the application directory:
@@ -181,9 +181,9 @@ Follow the steps below for the setup:
      ```text
      .unikraft/
      |-- libs/
+     |   |-- compiler-rt/
      |   |-- lwip/
      |   |-- musl/
-     |   |-- libuuid/
      |   `-- python3/
      `-- unikraft/
          |-- arch/
