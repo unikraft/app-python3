@@ -1,0 +1,39 @@
+---
+specification: '0.5'
+name: python3
+unikraft:
+  version: cloud
+  kconfig:
+    - CONFIG_LIBUKLIBPARAM=y
+    - CONFIG_STACK_SIZE_PAGE_ORDER=10
+targets:
+  - name: kraftcloud-x86_64
+    architecture: x86_64
+    platform: firecracker
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_KVM_BOOT_PROTO_LXBOOT=y
+      - CONFIG_KVM_VMM_FIRECRACKER=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_INITRD=y
+      - CONFIG_LIBVFSCORE_ROOTFS="initrd"
+      - CONFIG_VIRTIO_BUS=y
+      - CONFIG_VIRTIO_NET=n
+libraries:
+  musl:
+    version: stable
+  lwip:
+    version: stable
+  compiler-rt:
+    version: stable
+  python3:
+    version: stable
+    kconfig:
+      - CONFIG_LIBPYTHON3=y
+      - CONFIG_LIBPYTHON3_EXTENSIONS=y
+      - CONFIG_LIBPYTHON3_EXTENSION_EXPAT=y
+      - CONFIG_LIBPYTHON3_EXTENSION_LIBMPDEC=y
+      - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
+  ukp-bin:
+    source: https://github.com/unikraft-io/lib-ukp-bin
+    version: stable
