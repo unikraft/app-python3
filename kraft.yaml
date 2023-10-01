@@ -4,19 +4,73 @@ name: python3
 unikraft:
   version: stable
   kconfig:
-    - CONFIG_LIBUK9P=y
-    - CONFIG_LIB9PFS=y
     - CONFIG_LIBDEVFS=y
-    - CONFIG_LIBDEVFS_AUTOMOUNT=y
-    - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
-    - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
-    - CONFIG_LIBVFSCORE_ROOTDEV="fs0"
     - CONFIG_LIBUKLIBPARAM=y
+    - CONFIG_STACK_SIZE_PAGE_ORDER=10
 targets:
-  - architecture: x86_64
+  - name: python3-qemu-x86_64-9pfs
+    architecture: x86_64
     platform: qemu
-  - architecture: arm64
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS="9pfs"
+      - CONFIG_LIBVFSCORE_ROOTDEV="fs1"
+  - name: python3-qemu-arm64-9pfs
+    architecture: arm64
     platform: qemu
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_ARCH_ARM_64=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS="9pfs"
+      - CONFIG_LIBVFSCORE_ROOTDEV="fs1"
+  - name: python3-qemu-x86_64-initrd
+    architecture: x86_64
+    platform: qemu
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_INITRD=y
+      - CONFIG_LIBVFSCORE_ROOTFS="initrd"
+  - name: python3-qemu-arm64-initrd
+    architecture: arm64
+    platform: qemu
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_ARCH_ARM_64=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_INITRD=y
+      - CONFIG_LIBVFSCORE_ROOTFS="initrd"
+  - name: python3-fc-x86_64-initrd
+    architecture: x86_64
+    platform: firecracker
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_KVM_BOOT_PROTO_LXBOOT=y
+      - CONFIG_KVM_VMM_FIRECRACKER=y
+      - CONFIG_LIBVIRTIO_BUS=y
+      - CONFIG_LIBVIRTIO_MMIO=y
+      - CONFIG_LIBUKBUS=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_INITRD=y
+      - CONFIG_LIBVFSCORE_ROOTFS="initrd"
+  - name: python3-fc-arm64-initrd
+    architecture: arm64
+    platform: firecracker
+    kconfig:
+      - CONFIG_PLAT_KVM=y
+      - CONFIG_ARCH_ARM_64=y
+      - CONFIG_KVM_BOOT_PROTO_LXBOOT=y
+      - CONFIG_KVM_VMM_FIRECRACKER=y
+      - CONFIG_LIBVIRTIO_BUS=y
+      - CONFIG_LIBVIRTIO_MMIO=y
+      - CONFIG_LIBUKBUS=y
+      - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+      - CONFIG_LIBVFSCORE_ROOTFS_INITRD=y
+      - CONFIG_LIBVFSCORE_ROOTFS="initrd"
 libraries:
   musl:
     version: stable
@@ -32,9 +86,5 @@ libraries:
       - CONFIG_LIBPYTHON3_EXTENSION_UUID=y
       - CONFIG_LIBPYTHON3_EXTENSION_ZLIB=y
       - CONFIG_LIBPYTHON3_MAIN_FUNCTION=y
-  libuuid:
+  compiler-rt:
     version: stable
-volumes:
-  fs0:
-    driver: 9pfs
-    source: ./rootfs.tar.gz
