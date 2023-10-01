@@ -15,12 +15,12 @@ git clone https://github.com/unikraft/app-python3 python3
 cd python3/
 mkdir fs0/
 tar -C fs0/ -xvf rootfs.tar.gz
-mkdir .unikraft
-git clone https://github.com/unikraft/unikraft .unikraft/unikraft
-git clone https://github.com/unikraft/lib-python3 .unikraft/libs/python3
-git clone https://github.com/unikraft/lib-musl .unikraft/libs/musl
-git clone https://github.com/unikraft/lib-lwip .unikraft/libs/lwip
-git clone https://github.com/unikraft/lib-compiler-rt .unikraft/libs/compiler-rt
+mkdir workdir
+git clone https://github.com/unikraft/unikraft workdir/unikraft
+git clone https://github.com/unikraft/lib-python3 workdir/libs/python3
+git clone https://github.com/unikraft/lib-musl workdir/libs/musl
+git clone https://github.com/unikraft/lib-lwip workdir/libs/lwip
+git clone https://github.com/unikraft/lib-compiler-rt workdir/libs/compiler-rt
 UK_DEFCONFIG=$(pwd)/.config.python3_qemu-x86_64 make defconfig
 make -j $(nproc)
 sudo /usr/bin/qemu-system-x86_64 \
@@ -127,31 +127,31 @@ Follow the steps below for the setup:
      tar -C fs0/ -xvf rootfs.tar.gz
      ```
 
-  1. While inside the `python3/` directory, create the `.unikraft/` directory:
+  1. While inside the `python3/` directory, create the `workdir/` directory:
 
      ```console
-     mkdir .unikraft
+     mkdir workdir
      ```
 
-     Enter the `.unikraft/` directory:
+     Enter the `workdir/` directory:
 
      ```console
-     cd .unikraft/
+     cd workdir/
      ```
 
-  1. While inside the `.unikraft` directory, clone the [`unikraft` repository](https://github.com/unikraft/unikraft):
+  1. While inside the `workdir` directory, clone the [`unikraft` repository](https://github.com/unikraft/unikraft):
 
      ```console
      git clone https://github.com/unikraft/unikraft unikraft
      ```
 
-  1. While inside the `.unikraft/` directory, create the `libs/` directory:
+  1. While inside the `workdir/` directory, create the `libs/` directory:
 
      ```console
      mkdir libs
      ```
 
-  1. While inside the `.unikraft/` directory, clone the library repositories in the `libs/` directory:
+  1. While inside the `workdir/` directory, clone the library repositories in the `libs/` directory:
 
      ```console
      git clone https://github.com/unikraft/lib-python3 libs/python3
@@ -169,17 +169,17 @@ Follow the steps below for the setup:
      cd ../
      ```
 
-     Use the `tree` command to inspect the contents of the `.unikraft/` directory.
+     Use the `tree` command to inspect the contents of the `workdir/` directory.
      It should print something like this:
 
      ```console
-     tree -F -L 2 .unikraft/
+     tree -F -L 2 workdir/
      ```
 
-     The layout of the `.unikraft/` directory should look something like this:
+     The layout of the `workdir/` directory should look something like this:
 
      ```text
-     .unikraft/
+     workdir/
      |-- libs/
      |   |-- compiler-rt/
      |   |-- lwip/
@@ -274,7 +274,7 @@ You can see a list of all the files processed by the build system:
   UKBI    python3_qemu-x86_64.dbg.bootinfo
   SCSTRIP python3_qemu-x86_64
   GZ      python3_qemu-x86_64.gz
-make[1]: Leaving directory '/media/stefan/projects/unikraft/scripts/workdir/apps/app-python3/.unikraft/unikraft'
+make[1]: Leaving directory '/media/stefan/projects/unikraft/scripts/workdir/apps/app-python3workdir/unikraft'
 ```
 
 At the end of the build command, the `python3_qemu-x86_64` unikernel image is generated.
@@ -305,7 +305,7 @@ Same as when building for x86_64, you can see a list of all the files
   UKBI    python3_qemu-arm64.dbg.bootinfo
   SCSTRIP python3_qemu-arm64
   GZ      python3_qemu-arm64.gz
-make[1]: Leaving directory '/media/stefan/projects/unikraft/scripts/workdir/apps/app-python3/.unikraft/unikraft'
+make[1]: Leaving directory '/media/stefan/projects/unikraft/scripts/workdir/apps/app-python3/workdir/unikraft'
 ```
 
 Similarly to x86_64, at the end of the build command, the `python3_qemu-arm64` unikernel image is generated.
