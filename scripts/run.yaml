@@ -1,0 +1,14 @@
+runs:
+  - name: interp
+    rootfs: rootfs/
+    packed_rootfs: rootfs.tar.gz
+    memory: 256
+    networking: False
+    accel: True
+  - name: http-server
+    rootfs: rootfs/
+    packed_rootfs: rootfs.tar.gz
+    command: -m http.server 8080
+    memory: 256
+    networking: True
+    accel: True
