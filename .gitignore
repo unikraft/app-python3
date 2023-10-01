@@ -1,6 +1,5 @@
-/.config
-/.config.old
-/fs0/
-/build/
+/.config*
+/rootfs/
 /.unikraft/
 /workdir/
+/rootfs.cpio
