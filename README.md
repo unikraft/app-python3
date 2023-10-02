@@ -53,6 +53,7 @@ For building and running everything for `x86_64`, follow the steps below:
 ```console
 git clone https://github.com/unikraft/app-python3 python3
 cd python3/
+./script/setup.sh
 wget https://raw.githubusercontent.com/unikraft/app-testing/staging/scripts/generate.py -O scripts/generate.py
 chmod a+x scripts/generate.py
 ./scripts/generate.py
@@ -67,6 +68,7 @@ The same can be done for `AArch64`, by running the commands below:
 ```console
 git clone https://github.com/unikraft/app-python3 python3
 cd python3/
+./scripts/setup.sh
 wget https://raw.githubusercontent.com/unikraft/app-testing/staging/scripts/generate.py -O scripts/generate.py
 chmod a+x scripts/generate.py
 ./scripts/generate.py
@@ -159,14 +161,10 @@ Follow the steps below for the setup:
      defconfigs/  kraft.cloud.yaml  kraft.yaml  Makefile  Makefile.uk  README.md  rootfs.tar.gz  scripts/
      ```
 
-  1. While inside the `python3/` directory, clone all required repositories:
+  1. While inside the `python3/` directory, clone all required repositories by using the `setup.sh` script:
 
      ```console
-     git clone https://github.com/unikraft/unikraft workdir/unikraft
-     git clone https://github.com/unikraft/lib-python3 libs/python3
-     git clone https://github.com/unikraft/lib-musl libs/musl
-     git clone https://github.com/unikraft/lib-lwip libs/lwip
-     git clone https://github.com/unikraft/lib-compiler-rt libs/compiler-rt
+     ./scripts/setup.sh
      ```
 
   1. Use the `tree` command to inspect the contents of the `workdir/` directory.
@@ -248,7 +246,8 @@ scripts/
 [...]
 |   |-- qemu-x86_64-initrd-http-server.sh*
 |   `-- qemu-x86_64-initrd-interp.sh*
-`-- run.yaml
+|-- run.yaml
+`-- setup.sh*
 ```
 
 They are shell scripts, so you can use an editor or a text viewer to check their contents:
