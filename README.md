@@ -54,7 +54,7 @@ For building and running everything for `x86_64`, follow the steps below:
 ```console
 git clone https://github.com/unikraft/app-python3 python3
 cd python3/
-./script/setup.sh
+./scripts/setup.sh
 wget https://raw.githubusercontent.com/unikraft/app-testing/staging/scripts/generate.py -O scripts/generate.py
 chmod a+x scripts/generate.py
 ./scripts/generate.py
