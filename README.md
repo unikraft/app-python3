@@ -28,7 +28,8 @@ kraft build --arch x86_64 --plat qemu
 Once built, you can instantiate the unikernel via:
 
 ```console
-kraft run
+tar xvf rootfs.tar.gz -C rootfs/
+kraft run --initrd rootfs/ -M 256M
 ```
 
 When left without any input flags, you'll be queried for the desired target architecture/platform.
@@ -36,7 +37,7 @@ When left without any input flags, you'll be queried for the desired target arch
 If you are running on a virtual machine, or a system without KVM support, disable hardware acceleration by using the `-W` command line flag:
 
 ```console
-kraft run -W
+kraft run -W --initrd rootfs/ -M 256M
 ```
 
 This starts a Python3 console in a virtual machine.
